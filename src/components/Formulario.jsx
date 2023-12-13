@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import Error from "./Error";
 
-const Formulario = ({ pacientes, setPacientes, paciente, setPaciente}) => {
+const Formulario = ({ pacientes, setPacientes, paciente, setPaciente }) => {
   const [nombre, setNombre] = useState("");
   const [propietario, setPropietario] = useState("");
   const [email, setEmail] = useState("");
@@ -12,6 +12,8 @@ const Formulario = ({ pacientes, setPacientes, paciente, setPaciente}) => {
   const [error, setError] = useState(false);
 
   useEffect(() => {
+    console.log(Object.keys(paciente));
+    console.log(paciente.sintomas);
     if (Object.keys(paciente).length > 0) {
       setNombre(paciente.nombre);
       setPropietario(paciente.propietario);
@@ -19,8 +21,7 @@ const Formulario = ({ pacientes, setPacientes, paciente, setPaciente}) => {
       setFecha(paciente.fecha);
       setSintomas(paciente.sintomas);
     }
-  }, [paciente])
-
+  }, [paciente]);
 
   const generarID = () => {
     const random = Math.random().toString(36).substr(2);
@@ -30,7 +31,6 @@ const Formulario = ({ pacientes, setPacientes, paciente, setPaciente}) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    //Validacion del formulario
 
     if ([nombre, propietario, email, fecha, sintomas].includes("")) {
       setError(true);
@@ -38,34 +38,29 @@ const Formulario = ({ pacientes, setPacientes, paciente, setPaciente}) => {
     }
 
     setError(false);
-    // Objeto de paciente
 
     const objetoPaciente = {
       nombre,
       propietario,
       email,
       fecha,
-      sintomas
+      sintomas,
     };
 
     if (paciente.id) {
-      //Editando el registro
-      objetoPaciente.id = paciente.id
-      
+      objetoPaciente.id = paciente.id;
+
       const PacientesActualizados = pacientes.map((pacienteState) =>
         pacienteState.id === paciente.id ? objetoPaciente : pacienteState
       );
-      
-      setPacientes(PacientesActualizados)
-      setPaciente({})
-      
+
+      setPacientes(PacientesActualizados);
+      setPaciente({});
     } else {
-      // Nuevo registro
       objetoPaciente.id = generarID();
       setPacientes([...pacientes, objetoPaciente]);
     }
- 
-    // Limpiamos (Reiniciamos el formulario)
+
     setNombre("");
     setPropietario("");
     setEmail("");
@@ -84,17 +79,12 @@ const Formulario = ({ pacientes, setPacientes, paciente, setPaciente}) => {
         onSubmit={handleSubmit}
         className="bg-white shadow-md rounded-lg py-10 px-5 mb-10 mx-5"
       >
-        {/* Cuando se usa children */}
-        {error && 
+        {error && (
           <Error>
             <p>Todos los campos son obligatirios</p>
           </Error>
-        }
-        {/* Cuando no se usa children, se cambiaria children por mensaje y se encierra en un p en el formulario*/}
-        {/* {error && <Error mensaje="Todos los campos son obligatirios" />} */}
+        )}
         <div className="mb-5">
-          {/* Lo que esta en htmlFor debe ser el mismo nombre que esta en id de input; esto
-          hace que al hacer clic sobre el label, se active el input */}
           <label
             htmlFor="mascota"
             className="block text-gray-700 uppercase font-bold"
@@ -112,8 +102,6 @@ const Formulario = ({ pacientes, setPacientes, paciente, setPaciente}) => {
         </div>
 
         <div className="mb-5">
-          {/* Lo que esta en htmlFor debe ser el mismo nombre que esta en id de input; esto
-          hace que al hacer clic sobre el label, se active el input */}
           <label
             htmlFor="propietario"
             className="block text-gray-700 uppercase font-bold"
@@ -131,8 +119,6 @@ const Formulario = ({ pacientes, setPacientes, paciente, setPaciente}) => {
         </div>
 
         <div className="mb-5">
-          {/* Lo que esta en htmlFor debe ser el mismo nombre que esta en id de input; esto
-          hace que al hacer clic sobre el label, se active el input */}
           <label
             htmlFor="email"
             className="block text-gray-700 uppercase font-bold"
@@ -149,8 +135,6 @@ const Formulario = ({ pacientes, setPacientes, paciente, setPaciente}) => {
           />
         </div>
         <div className="mb-5">
-          {/* Lo que esta en htmlFor debe ser el mismo nombre que esta en id de input; esto
-          hace que al hacer clic sobre el label, se active el input */}
           <label
             htmlFor="alta"
             className="block text-gray-700 uppercase font-bold"
@@ -166,8 +150,6 @@ const Formulario = ({ pacientes, setPacientes, paciente, setPaciente}) => {
           />
         </div>
         <div className="mb-5">
-          {/* Lo que esta en htmlFor debe ser el mismo nombre que esta en id de input; esto
-          hace que al hacer clic sobre el label, se active el input */}
           <label
             htmlFor="sintomas"
             className="block text-gray-700 uppercase font-bold"
